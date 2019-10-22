@@ -1,11 +1,9 @@
-package pl.progser;
+package pl.progser.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import pl.progser.model.Training;
+import pl.progser.domain.Training;
 import pl.progser.store.TrainingStore;
 
 @RestController

@@ -6,7 +6,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.progser.model.Training;
+import pl.progser.domain.Training;
 
 import javax.sql.DataSource;
 import java.lang.invoke.MethodHandles;

@@ -1,6 +1,6 @@
 package pl.progser.store;
 
-import pl.progser.model.Training;
+import pl.progser.domain.Training;
 
 public class StandardTrainingStore implements TrainingStore {
     private TrainingStore store;

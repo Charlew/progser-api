@@ -1,4 +1,4 @@
-package pl.progser.model;
+package pl.progser.domain;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
