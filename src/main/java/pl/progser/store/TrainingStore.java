@@ -1,19 +1,10 @@
 package pl.progser.store;
 
+import pl.progser.domain.Exercise;
 import pl.progser.domain.Training;
 
 public interface TrainingStore {
-    void storeData(Training training);
-
-    class Fakes {
-        public static TrainingStore dummy() {
-            return new TrainingStore() {
-
-                @Override
-                public void storeData(Training training) {
-
-                }
-            };
-        }
-    }
+    void storeTraining(Training training);
+    String getTraining(String id);
+    void insertExercise(String trainingId, Exercise exercise);
 }

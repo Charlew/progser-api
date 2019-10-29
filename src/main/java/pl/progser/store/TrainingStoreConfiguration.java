@@ -10,7 +10,7 @@ public class TrainingStoreConfiguration {
     @Bean
     TrainingStore trainingStore(@Value("${db.url:}") String url, @Value("${db.password:}") String password) {
         if (url.isBlank()) {
-            return TrainingStore.Fakes.dummy();
+            return new StandardTrainingStore(new InMemoryTrainingStore());
         }
         return new StandardTrainingStore(new PostgresStore(url, password));
     }
