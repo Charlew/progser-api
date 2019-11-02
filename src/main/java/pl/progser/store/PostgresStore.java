@@ -17,7 +17,7 @@ public final class PostgresStore implements TrainingStore {
 
     private DataSource dataSource;
 
-    private static final String INSERT_TRAINING = "insert into training(time, \"jsonData\") values (?, ?, cast(? as json))";
+    private static final String INSERT_TRAINING = "insert into training(time, \"jsonData\") values (?, cast(? as json))";
 
     private static final String INSERT_EXERCISE = "update training where id = ? set \"jsonData\" = \"jsonData\" || ?";
 

@@ -1,8 +1,9 @@
 package pl.progser.store;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.progser.domain.Training;
-import pl.progser.utils.GsonTransformer;
+import pl.progser.utils.Transformer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,17 +12,21 @@ public final class InMemoryTrainingStore implements TrainingStore {
 
     private final Map<String, Training> trainingMap = new HashMap<>();
 
-    private final GsonTransformer transformer = new GsonTransformer();
+    private final Transformer transformer = new Transformer();
 
     @Override
     public void storeTraining(String training) {
-        var trainingObject = transformer.deserialize(training);
+        var trainingObject = transformer.deserialize(training, Training.class);
         trainingMap.put(trainingObject.getId(), trainingObject);
     }
 
     @Override
     public String getTraining(String id) {
-        return new Gson().toJson(trainingMap.get(id));
+        try {
+            return new ObjectMapper().writeValueAsString(trainingMap.get(id));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

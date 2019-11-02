@@ -1,6 +1,5 @@
 package pl.progser.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class Training {
 
-    @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private String id;
 
     @ApiModelProperty(example = "FBW")

@@ -27,10 +27,10 @@ public class Endpoint {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/addTraining")
+    @PostMapping(value = "/addTraining")
     public String addTraining(@RequestBody Training training) {
-        logger.info("Training created with id = {}", training.getId());
         handler.addTraining(training);
+        logger.info("Training created with id = {}", training.getId());
         return training.getId();
     }
 

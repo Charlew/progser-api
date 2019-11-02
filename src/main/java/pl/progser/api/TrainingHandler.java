@@ -4,12 +4,12 @@ import org.springframework.stereotype.Service;
 import pl.progser.domain.Exercise;
 import pl.progser.domain.Training;
 import pl.progser.store.TrainingStore;
-import pl.progser.utils.GsonTransformer;
+import pl.progser.utils.Transformer;
 
 @Service
 public final class TrainingHandler {
 
-    private final GsonTransformer transformer = new GsonTransformer();
+    private final Transformer transformer = new Transformer();
 
     private final TrainingStore store;
 
@@ -22,7 +22,7 @@ public final class TrainingHandler {
     }
 
     Training getTraining(String id) {
-        return transformer.deserialize(store.getTraining(id));
+        return transformer.deserialize(store.getTraining(id), Training.class);
     }
 
     void addExercise(Exercise exercise, String trainingId) {
