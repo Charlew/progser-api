@@ -1,13 +1,10 @@
 package pl.progser.store;
 
-import com.google.gson.Gson;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.progser.domain.Exercise;
-import pl.progser.domain.Training;
 
 import javax.sql.DataSource;
 import java.lang.invoke.MethodHandles;
@@ -15,13 +12,16 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public final class PostgresStore implements TrainingStore {
-    private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    private DataSource dataSource;
-    private Gson gson = new Gson();
-    private static final String INSERT_TRAINING = "insert into training(time, id, \"jsonData\") values (?, ?, cast(? as json))";
-    private static final String INSERT_EXERCISE = "update training where id = ? set \"jsonData\" = \"jsonData\" || ?";
-    private static final String GET_TRAINING_QUERY = "select \"jsonData\" from training where id =?";
 
+    private Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+    private DataSource dataSource;
+
+    private static final String INSERT_TRAINING = "insert into training(time, \"jsonData\") values (?, ?, cast(? as json))";
+
+    private static final String INSERT_EXERCISE = "update training where id = ? set \"jsonData\" = \"jsonData\" || ?";
+
+    private static final String GET_TRAINING_QUERY = "select \"jsonData\" from training where id =? and \"jsonData\" ->> 'id' = ?";
 
     public PostgresStore(String url, String password) {
         var pgDataSource = new PGSimpleDataSource();
@@ -33,11 +33,6 @@ public final class PostgresStore implements TrainingStore {
 
         dataSource = new HikariDataSource(hikariConfig);
     }
-
-    private String serializeJson(Object object) {
-        return gson.toJson(object);
-    }
-
 
     @Override
     public String getTraining(String id) {
@@ -57,11 +52,11 @@ public final class PostgresStore implements TrainingStore {
     }
 
     @Override
-    public void insertExercise(String trainingId, Exercise exercise) {
+    public void insertExercise(String trainingId, String serializedExercise) {
         try(var connection = dataSource.getConnection()) {
             try(var statement = connection.prepareStatement(INSERT_EXERCISE)) {
                 statement.setObject(1, trainingId);
-                statement.setObject(2, exercise);
+                statement.setString(2, serializedExercise);
                 statement.execute();
             }
         } catch (SQLException e) {
@@ -70,12 +65,11 @@ public final class PostgresStore implements TrainingStore {
     }
 
     @Override
-    public void storeTraining(Training training) {
+    public void storeTraining(String training) {
         try(var connection = dataSource.getConnection()) {
             try(var statement = connection.prepareStatement(INSERT_TRAINING)) {
                 statement.setObject(1, LocalDate.now());
-                statement.setObject(2, training.getId());
-                statement.setString(3, serializeJson(training));
+                statement.setString(2, training);
                 statement.execute();
             }
         } catch (SQLException e) {

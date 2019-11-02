@@ -1,0 +1,1 @@
+create table training(time timestamp, "jsonData" jsonb);

@@ -1,4 +1,4 @@
-package pl.progser.api;
+package pl.progser.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,11 +15,11 @@ public final class GsonTransformer {
                 .create();
     }
 
-    public String serialize(Training training) {
-        return gson.toJson(training);
+    public String serialize(Object object) {
+        return gson.toJson(object);
     }
 
-    protected Training deserialize(String json) {
+    public Training deserialize(String json) {
         return new Gson().fromJson(json, Training.class);
     }
 }

@@ -1,8 +1,8 @@
 package pl.progser.store;
 
 import com.google.gson.Gson;
-import pl.progser.domain.Exercise;
 import pl.progser.domain.Training;
+import pl.progser.utils.GsonTransformer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +11,12 @@ public final class InMemoryTrainingStore implements TrainingStore {
 
     private final Map<String, Training> trainingMap = new HashMap<>();
 
+    private final GsonTransformer transformer = new GsonTransformer();
+
     @Override
-    public void storeTraining(Training training) {
-        trainingMap.put(training.getId(), training);
+    public void storeTraining(String training) {
+        var trainingObject = transformer.deserialize(training);
+        trainingMap.put(trainingObject.getId(), trainingObject);
     }
 
     @Override
@@ -22,6 +25,6 @@ public final class InMemoryTrainingStore implements TrainingStore {
     }
 
     @Override
-    public void insertExercise(String trainingId, Exercise exercise) {
+    public void insertExercise(String trainingId, String serializedExercise) {
     }
 }

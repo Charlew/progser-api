@@ -1,8 +1,5 @@
 package pl.progser.store;
 
-import pl.progser.domain.Exercise;
-import pl.progser.domain.Training;
-
 public class StandardTrainingStore implements TrainingStore {
     private TrainingStore store;
 
@@ -11,7 +8,7 @@ public class StandardTrainingStore implements TrainingStore {
     }
 
     @Override
-    public void storeTraining(Training training) {
+    public void storeTraining(String training) {
         store.storeTraining(training);
     }
 
@@ -21,7 +18,7 @@ public class StandardTrainingStore implements TrainingStore {
     }
 
     @Override
-    public void insertExercise(String trainingId, Exercise exercise) {
+    public void insertExercise(String trainingId, String exercise) {
         store.insertExercise(trainingId, exercise);
     }
 }
